@@ -47,69 +47,11 @@ import "views/api/api.js";
 import { stpTemp, strTemp, TempFlowAq, updateRelay} from "./api/api";
 
 const Dashboard = () => {
-  const [bigChartData, setbigChartData] = React.useState("data1");
-  const setBgChartData = (name) => {
-    setbigChartData(name);
-  };
-  const [ThinPlotData, setThinPlotData] = React.useState(Array.from({length: 10}, (_, i) => 0));
-  const [ThoutPlotData, setThoutPlotData] = React.useState(Array.from({length: 10}, (_, i) => 0));
-  const labels = [...Array(10).keys()];
-  const thisData = (canvas) => {
-    let ctx = canvas.getContext("2d");
-    let gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
-
-    gradientStroke.addColorStop(1, "rgba(29,140,248,0.2)");
-    gradientStroke.addColorStop(0.4, "rgba(29,140,248,0.0)");
-    gradientStroke.addColorStop(0, "rgba(29,140,248,0)");
-
-    return {
-      labels: labels,
-      datasets: [
-        {
-          label: 'Thin',
-          data: ThinPlotData,
-          fill: true,
-          backgroundColor: ctx.createLinearGradient(0, 230, 0, 50),
-          borderColor: "#1f8ef1",
-          borderWidth: 2,
-          borderDash: [],
-          borderDashOffset: 0.0,
-          pointBackgroundColor: "#1f8ef1",
-          pointBorderColor: "rgba(255,255,255,0)",
-          pointHoverBackgroundColor: "#1f8ef1",
-          pointBorderWidth: 20,
-          pointHoverRadius: 4,
-          pointHoverBorderWidth: 15,
-          pointRadius: 4,
-          yAxisID: 'y',
-        },
-        // {
-        //   label: 'Thout',
-        //   data: ThoutPlotData,
-        //   fill: true,
-        //   backgroundColor: ctx.createLinearGradient(0, 230, 0, 50),
-        //   borderColor: "#1f8ef1",
-        //   borderWidth: 2,
-        //   borderDash: [],
-        //   borderDashOffset: 0.0,
-        //   pointBackgroundColor: "#1f8ef1",
-        //   pointBorderColor: "rgba(255,255,255,0)",
-        //   pointHoverBackgroundColor: "#1f8ef1",
-        //   pointBorderWidth: 20,
-        //   pointHoverRadius: 4,
-        //   pointHoverBorderWidth: 15,
-        //   pointRadius: 4,
-        //   yAxisID: 'y1',
-        // },
-      ]
-    };
-  };
-
   const [runStat, setrunStat] = React.useState(false);
-  const [Thin, setThin] = React.useState(41.0);
-  const [Thout, setThout] = React.useState(42.0);
-  const [Tcin, setTcin] = React.useState(43.0);
-  const [Tcout, setTcout] = React.useState(44.0);
+  const [Thin, setThin] = React.useState(0);
+  const [Thout, setThout] = React.useState(0);
+  const [Tcin, setTcin] = React.useState(0);
+  const [Tcout, setTcout] = React.useState(0);
   const [fetchTimer, setFetchTimer] = React.useState(null);
 
   const acTemp = async () => {
@@ -132,7 +74,6 @@ const Dashboard = () => {
     console.log(cond);
     console.log(ftt);
     if(cond && ftt === null){
-      // await acTemp();
       await strTemp();
       setFetchTimer(setInterval(acTemp, 2000));
     }
@@ -152,27 +93,6 @@ const Dashboard = () => {
     <>
       <div className="content">
         <Row>
-          <Col xs="6"> 
-            <Card className="card-chart">
-              <CardHeader>
-                <Row>
-                  <Col className="text-left" sm="6">
-                    <h5 className="card-category">Live Plot</h5>
-                    <CardTitle tag="h4">Temperature</CardTitle>
-                  </Col>
-                </Row>
-              </CardHeader>
-              <CardBody>
-                <div className="chart-area">
-                  <Line
-                    data={chartExample1[bigChartData]}
-                    // data = {thisData}
-                    options={chartExample1.options}
-                  />
-                </div>
-              </CardBody>
-            </Card>
-          </Col>
           <Col xs="6">
             <Row>
               <Col xs="6">
@@ -228,6 +148,8 @@ const Dashboard = () => {
                 </Card>
               </Col>
             </Row>
+          </Col>
+          <Col>
             <Row>
               <Col xs="6">
                 <Card className="card-stats">
@@ -282,7 +204,7 @@ const Dashboard = () => {
                 </Card>
               </Col>
             </Row>
-          </Col>  
+          </Col>
         </Row>
         <Row>
           <Col>
