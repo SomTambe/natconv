@@ -21,7 +21,7 @@ def writeCurrTempValues(vals):
     vals: comma seperated string
     Currently only store 1 set of values in the database.
     """
-    t1, t2, t3, t4, t5, t6 = vals.split(',')
+    t1, t2, t3, t4 = vals.split(',')
     h = HX.objects.get(id=1)
     h.T1 = t1
     h.T2 = t2
